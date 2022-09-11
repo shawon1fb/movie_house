@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { compareSync, genSaltSync, hashSync } from 'bcrypt';
-import { SHA256, enc } from 'crypto-js';
+import { compareSync, genSaltSync, hashSync } from 'bcryptjs';
+import { enc, SHA256 } from 'crypto-js';
 
 @Injectable()
 export class HelperHashService {
