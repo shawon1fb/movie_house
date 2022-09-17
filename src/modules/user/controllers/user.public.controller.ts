@@ -18,6 +18,7 @@ import { UserSignUpDto } from '../dtos/user.sign-up.dto';
 import { UserPayloadSerialization } from '../serializations/user.payload.serialization';
 import { UserService } from '../services/user.service';
 import { IUserCheckExist, IUserDocument } from '../user.interface';
+import { EmailVerificationService } from '../services/email.verification.service';
 
 @Controller({
     version: '1',
@@ -27,7 +28,8 @@ export class UserPublicController {
     constructor(
         private readonly userService: UserService,
         private readonly authService: AuthService,
-        private readonly roleService: RoleService
+        private readonly roleService: RoleService,
+        private readonly emailVerificationService: EmailVerificationService
     ) {}
 
     @Response('auth.signUp')
@@ -86,6 +88,9 @@ export class UserPublicController {
                 passwordExpired: password.passwordExpired,
                 salt: password.salt,
             });
+            await this.emailVerificationService.createAndSaveValidationToken(
+                create
+            );
 
             const user: IUserDocument =
                 await this.userService.findOneById<IUserDocument>(create._id, {

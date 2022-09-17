@@ -11,6 +11,7 @@ import { RoleModule } from 'src/modules/role/role.module';
 import { UserController } from 'src/modules/user/controllers/user.controller';
 import { UserModule } from 'src/modules/user/user.module';
 import { AuthController } from '../../common/auth/controllers/auth.controller';
+import { UserVerificationController } from '../../modules/user/controllers/user.verification.controller';
 
 @Module({
     controllers: [
@@ -18,6 +19,7 @@ import { AuthController } from '../../common/auth/controllers/auth.controller';
         UserController,
         HealthController,
         AuthController,
+        UserVerificationController,
     ],
     providers: [],
     exports: [],

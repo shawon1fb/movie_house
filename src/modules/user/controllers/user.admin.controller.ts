@@ -1,15 +1,15 @@
 import {
-    Controller,
-    Get,
-    Post,
+    BadRequestException,
     Body,
+    Controller,
     Delete,
+    Get,
+    InternalServerErrorException,
+    NotFoundException,
+    Patch,
+    Post,
     Put,
     Query,
-    InternalServerErrorException,
-    BadRequestException,
-    Patch,
-    NotFoundException,
     UploadedFile,
 } from '@nestjs/common';
 import { ENUM_AUTH_PERMISSIONS } from 'src/common/auth/constants/auth.enum.permission.constant';
@@ -53,6 +53,7 @@ import { UserGetSerialization } from '../serializations/user.get.serialization';
 import { UserListSerialization } from '../serializations/user.list.serialization';
 import { UserService } from '../services/user.service';
 import { IUserCheckExist, IUserDocument } from '../user.interface';
+import { EmailVerificationService } from '../services/email.verification.service';
 
 @Controller({
     version: '1',
@@ -63,7 +64,8 @@ export class UserAdminController {
         private readonly authService: AuthService,
         private readonly paginationService: PaginationService,
         private readonly userService: UserService,
-        private readonly roleService: RoleService
+        private readonly roleService: RoleService,
+        private readonly emailVerificationService: EmailVerificationService
     ) {}
 
     @ResponsePaging('user.list', {
@@ -177,6 +179,10 @@ export class UserAdminController {
                 salt: password.salt,
             });
 
+            const otp: number =
+                await this.emailVerificationService.createAndSaveValidationToken(
+                    create
+                );
             return {
                 _id: create._id,
             };

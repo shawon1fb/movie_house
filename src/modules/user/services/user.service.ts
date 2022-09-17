@@ -131,7 +131,7 @@ export class UserService {
         const user: UserEntity = {
             firstName,
             email,
-            isEmailVerified: true,
+            isEmailVerified: false,
             mobileNumber,
             password,
             role: new Types.ObjectId(role),

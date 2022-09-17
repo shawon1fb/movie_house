@@ -13,6 +13,8 @@ import {
     EmailVerificationEntity,
     EmailVerificationSchema,
 } from './schemas/email.verification.token.schema';
+import { EmailVerificationService } from './services/email.verification.service';
+import { UserVerificationController } from './controllers/user.verification.controller';
 
 @Module({
     imports: [
@@ -32,8 +34,8 @@ import {
             DATABASE_CONNECTION_NAME
         ),
     ],
-    exports: [UserService, UserBulkService],
-    providers: [UserService, UserBulkService],
+    exports: [UserService, UserBulkService, EmailVerificationService],
+    providers: [UserService, UserBulkService, EmailVerificationService],
     controllers: [],
 })
 export class UserModule {}
