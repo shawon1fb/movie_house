@@ -204,11 +204,6 @@ export class UserController {
                 statusCode: ENUM_USER_STATUS_CODE_ERROR.USER_IS_INACTIVE_ERROR,
                 message: 'user.error.inactive',
             });
-        } else if (!user.isEmailVerified) {
-            throw new ForbiddenException({
-                statusCode: ENUM_USER_STATUS_CODE_ERROR.USER_EMAIL_NOT_VERIFIED,
-                message: 'user.error.emailIsNotVerified',
-            });
         } else if (!user.role.isActive) {
             throw new ForbiddenException({
                 statusCode: ENUM_ROLE_STATUS_CODE_ERROR.ROLE_IS_INACTIVE_ERROR,

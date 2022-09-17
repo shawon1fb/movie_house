@@ -11,6 +11,7 @@
   "login": "Login success.",
   "refresh": "Refresh token success",
   "signUp": "Sign up Success",
+  "verifyEmail": "email successfully verified",
   "error": {
     "notFound": "User not found.",
     "emailExist": "Email user used",
@@ -21,6 +22,8 @@
     "newPasswordMustDifference": "Old password must difference",
     "inactive": "User is inactive",
     "passwordExpired": "User password expired",
-    "emailIsNotVerified": "User email is not verified"
+    "emailIsNotVerified": "User email is not verified",
+    "emailAlreadyVerified": "User email is already verified",
+    "otpInvalid": "please submit a valid otp"
   }
 }
