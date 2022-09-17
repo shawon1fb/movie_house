@@ -1,4 +1,10 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    ForbiddenException,
+    Post,
+    UseGuards,
+} from '@nestjs/common';
 import { AuthService } from '../../../common/auth/services/auth.service';
 import { PaginationService } from '../../../common/pagination/services/pagination.service';
 import { UserService } from '../services/user.service';
@@ -13,6 +19,7 @@ import { IUserDocument } from '../user.interface';
 import { IResponse } from '../../../common/response/response.interface';
 import { UserEmailAlreadyVerifiedGuard } from '../guards/user.email-already-verified';
 import { UserOtpDto } from '../dtos/user.otp.dto';
+import { ENUM_USER_STATUS_CODE_ERROR } from '../constants/user.status-code.constant';
 
 @Controller({
     version: '1',
@@ -43,6 +50,13 @@ export class UserVerificationController {
                 user._id,
                 dto.otp
             );
+
+        if (check == false) {
+            throw new ForbiddenException({
+                statusCode: ENUM_USER_STATUS_CODE_ERROR.INVALID_OTP,
+                message: 'user.error.otpInvalid',
+            });
+        }
         return {
             user,
             dto,

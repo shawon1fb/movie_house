@@ -23,6 +23,7 @@
     "inactive": "User is inactive",
     "passwordExpired": "User password expired",
     "emailIsNotVerified": "User email is not verified",
-    "emailAlreadyVerified": "User email is already verified"
+    "emailAlreadyVerified": "User email is already verified",
+    "otpInvalid": "please submit a valid otp"
   }
 }
