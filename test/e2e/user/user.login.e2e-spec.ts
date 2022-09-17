@@ -268,7 +268,7 @@ describe('E2E User Login', () => {
             console.error(e);
         }
 
-        connection.close();
+        await connection.close();
         await app.close();
     });
 });

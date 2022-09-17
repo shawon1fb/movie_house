@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types, Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { IAwsS3 } from 'src/common/aws/aws.interface';
 import { RoleEntity } from 'src/modules/role/schemas/role.schema';
 
@@ -65,6 +65,12 @@ export class UserEntity {
         default: true,
     })
     isActive: boolean;
+
+    @Prop({
+        required: true,
+        default: false,
+    })
+    isEmailVerified: boolean;
 
     @Prop({
         required: false,

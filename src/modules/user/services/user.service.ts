@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ConfigService } from '@nestjs/config';
 import { UserDocument, UserEntity } from '../schemas/user.schema';
 import { HelperStringService } from 'src/common/helper/services/helper.string.service';
@@ -132,6 +131,7 @@ export class UserService {
         const user: UserEntity = {
             firstName,
             email,
+            isEmailVerified: true,
             mobileNumber,
             password,
             role: new Types.ObjectId(role),

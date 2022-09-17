@@ -8,6 +8,12 @@ import {
 } from './schemas/user.schema';
 import { UserBulkService } from './services/user.bulk.service';
 import { UserService } from './services/user.service';
+import {
+    EmailVerificationDatabaseName,
+    EmailVerificationEntity,
+    EmailVerificationSchema,
+} from './schemas/email.verification.token.schema';
+
 @Module({
     imports: [
         MongooseModule.forFeature(
@@ -16,6 +22,11 @@ import { UserService } from './services/user.service';
                     name: UserEntity.name,
                     schema: UserSchema,
                     collection: UserDatabaseName,
+                },
+                {
+                    name: EmailVerificationEntity.name,
+                    schema: EmailVerificationSchema,
+                    collection: EmailVerificationDatabaseName,
                 },
             ],
             DATABASE_CONNECTION_NAME
