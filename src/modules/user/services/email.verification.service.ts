@@ -6,7 +6,7 @@ import {
     EmailVerificationEntity,
 } from '../schemas/email.verification.token.schema';
 import { HelperNumberService } from '../../../common/helper/services/helper.number.service';
-import { UserEntity } from '../schemas/user.schema';
+import { UserDocument, UserEntity } from '../schemas/user.schema';
 import { HelperHashService } from '../../../common/helper/services/helper.hash.service';
 
 @Injectable()
@@ -14,6 +14,8 @@ export class EmailVerificationService {
     constructor(
         @DatabaseEntity(EmailVerificationEntity.name)
         private readonly verificationModel: Model<EmailVerificationDocument>,
+        @DatabaseEntity(UserEntity.name)
+        private readonly userModel: Model<UserDocument>,
         private readonly helperNumberService: HelperNumberService,
         private readonly helperHashService: HelperHashService
     ) {}
@@ -53,5 +55,12 @@ export class EmailVerificationService {
         } catch (e) {
             return false;
         }
+    }
+
+    async setUserEmailVerified(user: string) {
+        await this.userModel.findByIdAndUpdate(
+            { _id: user },
+            { isEmailVerified: true }
+        );
     }
 }

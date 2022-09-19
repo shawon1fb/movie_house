@@ -51,12 +51,15 @@ export class UserVerificationController {
                 dto.otp
             );
 
-        if (check == false) {
+        if (check === false) {
             throw new ForbiddenException({
                 statusCode: ENUM_USER_STATUS_CODE_ERROR.INVALID_OTP,
                 message: 'user.error.otpInvalid',
             });
+        } else {
+            await this.emailVerificationService.setUserEmailVerified(user._id);
         }
+
         return {
             user,
             dto,
