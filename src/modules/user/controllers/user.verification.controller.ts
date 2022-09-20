@@ -20,6 +20,8 @@ import { IResponse } from '../../../common/response/response.interface';
 import { UserEmailAlreadyVerifiedGuard } from '../guards/user.email-already-verified';
 import { UserOtpDto } from '../dtos/user.otp.dto';
 import { ENUM_USER_STATUS_CODE_ERROR } from '../constants/user.status-code.constant';
+import { UserLoginSerialization } from '../serializations/user.login.serialization';
+import { UserGetSerialization } from '../serializations/user.get.serialization';
 
 @Controller({
     version: '1',
@@ -35,7 +37,7 @@ export class UserVerificationController {
     ) {}
 
     @Response('user.verifyEmail', {
-        classSerialization: UserProfileSerialization,
+        classSerialization: UserGetSerialization,
     })
     @UseGuards(UserEmailAlreadyVerifiedGuard)
     @UserProfileGuard()
@@ -61,9 +63,7 @@ export class UserVerificationController {
         }
 
         return {
-            user,
-            dto,
-            check,
+            ...user,
         };
     }
 }

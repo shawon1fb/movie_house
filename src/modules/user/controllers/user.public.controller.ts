@@ -91,6 +91,9 @@ export class UserPublicController {
             await this.emailVerificationService.createAndSaveValidationToken(
                 create
             );
+            await this.emailVerificationService.sendEmail(
+                'shawon0187@gmail.com'
+            );
 
             const user: IUserDocument =
                 await this.userService.findOneById<IUserDocument>(create._id, {
