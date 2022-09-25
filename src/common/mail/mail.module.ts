@@ -7,11 +7,11 @@ import { MailerModule } from '@nestjs-modules/mailer';
     imports: [
         MailerModule.forRoot({
             transport: {
-                host: 'mail.shahanulshaheb.com',
-                port: 2525,
+                host: process.env.MAIL_HOST,
+                port: Number.parseInt(process.env.MAIL_PORT) || 2525,
                 auth: {
-                    user: '_mainaccount@shahanulshaheb.com',
-                    pass: '',
+                    user: process.env.MAIL_USER,
+                    pass: process.env.MAIL_PASSWORD,
                 },
             },
         }),
