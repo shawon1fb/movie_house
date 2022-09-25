@@ -45,6 +45,9 @@ import { UserPayloadSerialization } from '../serializations/user.payload.seriali
 import { UserProfileSerialization } from '../serializations/user.profile.serialization';
 import { UserService } from '../services/user.service';
 import { IUserDocument } from '../user.interface';
+import { SEND_EMAIL_OTP } from '../constants/user.events.constant';
+import { EmailVerificationService } from '../services/email.verification.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Controller({
     version: '1',
@@ -54,7 +57,9 @@ export class UserController {
     constructor(
         private readonly authService: AuthService,
         private readonly userService: UserService,
-        private readonly awsService: AwsS3Service
+        private readonly awsService: AwsS3Service,
+        private readonly emailVerificationService: EmailVerificationService,
+        private eventEmitter: EventEmitter2
     ) {}
 
     @Response('user.profile', {
@@ -257,7 +262,14 @@ export class UserController {
                 refreshToken,
             };
         }
-
+        const randomOtp =
+            await this.emailVerificationService.createAndSaveValidationToken(
+                user._id
+            );
+        this.eventEmitter.emit(SEND_EMAIL_OTP, {
+            email: user.email,
+            otp: randomOtp,
+        });
         return {
             metadata: {
                 // override status code

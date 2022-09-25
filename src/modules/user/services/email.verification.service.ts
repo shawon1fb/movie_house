@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseEntity } from '../../../common/database/decorators/database.decorator';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import {
     EmailVerificationDocument,
     EmailVerificationEntity,
@@ -23,7 +23,7 @@ export class EmailVerificationService {
         private readonly mailService: MailerService
     ) {}
 
-    async createAndSaveValidationToken(user: UserEntity): Promise<number> {
+    async createAndSaveValidationToken(user: Types.ObjectId): Promise<number> {
         try {
             const randomOtp: number = this.helperNumberService.random(6);
             const salt: string = this.helperHashService.randomSalt(8);
@@ -36,6 +36,7 @@ export class EmailVerificationService {
                 owner: user,
                 createAt: new Date(),
             };
+            await this.verificationModel.deleteMany({ owner: user });
             const create: EmailVerificationDocument =
                 new this.verificationModel(emailVerification);
             await create.save();
@@ -51,7 +52,6 @@ export class EmailVerificationService {
             const email = await this.verificationModel.findOne({
                 owner: user,
             });
-
             if (!email) {
                 return false;
             }
