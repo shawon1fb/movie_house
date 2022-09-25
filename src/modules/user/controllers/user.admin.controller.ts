@@ -184,7 +184,7 @@ export class UserAdminController {
 
             const otp: number =
                 await this.emailVerificationService.createAndSaveValidationToken(
-                    create
+                    create._id
                 );
             this.eventEmitter.emit(SEND_EMAIL_OTP, {
                 email: create.email,

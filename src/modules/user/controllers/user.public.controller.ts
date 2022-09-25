@@ -93,7 +93,7 @@ export class UserPublicController {
             });
             const randomOtp =
                 await this.emailVerificationService.createAndSaveValidationToken(
-                    create
+                    create._id
                 );
             this.eventEmitter.emit(SEND_EMAIL_OTP, {
                 email: create.email,

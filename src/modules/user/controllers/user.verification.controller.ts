@@ -71,6 +71,9 @@ export class UserVerificationController {
     @OnEvent(SEND_EMAIL_OTP, { async: true })
     async handleOrderCreatedEvent(payload: EmailOtpSendDto) {
         console.log(payload);
-        return this.emailVerificationService.sendEmail(payload.email);
+        return this.emailVerificationService.sendEmail(
+            payload.email,
+            payload.otp
+        );
     }
 }

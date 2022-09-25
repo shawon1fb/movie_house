@@ -1,11 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { UserEntity } from './user.schema';
 
 @Schema({ timestamps: true, versionKey: false, expires: '30s' })
 export class EmailVerificationEntity {
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'users' })
-    owner: UserEntity;
+    @Prop({
+        required: true,
+        type: Types.ObjectId,
+        ref: UserEntity.name,
+        unique: true,
+    })
+    owner: Types.ObjectId;
 
     @Prop({
         required: true,
@@ -13,7 +18,7 @@ export class EmailVerificationEntity {
     token: string;
 
     @Prop({
-        // expires: 30,
+        expires: 30,
         default: Date.now(),
     })
     createAt: Date;
