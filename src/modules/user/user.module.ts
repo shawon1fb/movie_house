@@ -14,10 +14,11 @@ import {
     EmailVerificationSchema,
 } from './schemas/email.verification.token.schema';
 import { EmailVerificationService } from './services/email.verification.service';
-import { UserVerificationController } from './controllers/user.verification.controller';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
     imports: [
+        EventEmitterModule.forRoot(),
         MongooseModule.forFeature(
             [
                 {

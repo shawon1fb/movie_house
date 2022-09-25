@@ -19,6 +19,8 @@ import { UserPayloadSerialization } from '../serializations/user.payload.seriali
 import { UserService } from '../services/user.service';
 import { IUserCheckExist, IUserDocument } from '../user.interface';
 import { EmailVerificationService } from '../services/email.verification.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { SEND_EMAIL_OTP } from '../constants/user.events.constant';
 
 @Controller({
     version: '1',
@@ -29,7 +31,8 @@ export class UserPublicController {
         private readonly userService: UserService,
         private readonly authService: AuthService,
         private readonly roleService: RoleService,
-        private readonly emailVerificationService: EmailVerificationService
+        private readonly emailVerificationService: EmailVerificationService,
+        private eventEmitter: EventEmitter2
     ) {}
 
     @Response('auth.signUp')
@@ -88,9 +91,14 @@ export class UserPublicController {
                 passwordExpired: password.passwordExpired,
                 salt: password.salt,
             });
-            await this.emailVerificationService.createAndSaveValidationToken(
-                create
-            );
+            const randomOtp =
+                await this.emailVerificationService.createAndSaveValidationToken(
+                    create
+                );
+            this.eventEmitter.emit(SEND_EMAIL_OTP, {
+                email: create.email,
+                otp: randomOtp,
+            });
 
             const user: IUserDocument =
                 await this.userService.findOneById<IUserDocument>(create._id, {

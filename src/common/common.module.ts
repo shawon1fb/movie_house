@@ -23,6 +23,7 @@ import { PaginationModule } from 'src/common/pagination/pagination.module';
 import { SettingModule } from 'src/common/setting/setting.module';
 import Joi from 'joi';
 import { ENUM_MESSAGE_LANGUAGE } from './message/constants/message.enum.constant';
+import { MailModule } from './mail/mail.module';
 
 @Module({
     controllers: [],
@@ -137,6 +138,7 @@ import { ENUM_MESSAGE_LANGUAGE } from './message/constants/message.enum.constant
         MiddlewareModule,
         AuthModule,
         SettingModule,
+        MailModule,
     ],
 })
 export class CommonModule {}

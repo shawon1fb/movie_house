@@ -8,6 +8,8 @@ import {
 import { HelperNumberService } from '../../../common/helper/services/helper.number.service';
 import { UserDocument, UserEntity } from '../schemas/user.schema';
 import { HelperHashService } from '../../../common/helper/services/helper.hash.service';
+import { MailerService } from '@nestjs-modules/mailer';
+import { SentMessageInfo } from 'nodemailer';
 
 @Injectable()
 export class EmailVerificationService {
@@ -17,7 +19,8 @@ export class EmailVerificationService {
         @DatabaseEntity(UserEntity.name)
         private readonly userModel: Model<UserDocument>,
         private readonly helperNumberService: HelperNumberService,
-        private readonly helperHashService: HelperHashService
+        private readonly helperHashService: HelperHashService,
+        private readonly mailService: MailerService
     ) {}
 
     async createAndSaveValidationToken(user: UserEntity): Promise<number> {
@@ -48,6 +51,7 @@ export class EmailVerificationService {
             const email = await this.verificationModel.findOne({
                 owner: user,
             });
+
             if (!email) {
                 return false;
             }
@@ -62,5 +66,21 @@ export class EmailVerificationService {
             { _id: user },
             { isEmailVerified: true }
         );
+    }
+
+    async sendEmail(toEmail: string): Promise<SentMessageInfo> {
+        try {
+            const response = await this.mailService.sendMail({
+                to: toEmail,
+                from: 'mail.shahanulshaheb.com',
+                subject: 'Plain Text Email ✔',
+                text: 'Welcome NestJS Email Sending Tutorial',
+            });
+            console.log(response);
+            return response;
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
     }
 }
