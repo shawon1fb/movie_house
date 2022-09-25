@@ -51,6 +51,7 @@ export class EmailVerificationService {
             const email = await this.verificationModel.findOne({
                 owner: user,
             });
+
             if (!email) {
                 return false;
             }

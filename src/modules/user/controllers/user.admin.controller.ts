@@ -54,6 +54,8 @@ import { UserListSerialization } from '../serializations/user.list.serialization
 import { UserService } from '../services/user.service';
 import { IUserCheckExist, IUserDocument } from '../user.interface';
 import { EmailVerificationService } from '../services/email.verification.service';
+import { SEND_EMAIL_OTP } from '../constants/user.events.constant';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Controller({
     version: '1',
@@ -65,7 +67,8 @@ export class UserAdminController {
         private readonly paginationService: PaginationService,
         private readonly userService: UserService,
         private readonly roleService: RoleService,
-        private readonly emailVerificationService: EmailVerificationService
+        private readonly emailVerificationService: EmailVerificationService,
+        private eventEmitter: EventEmitter2
     ) {}
 
     @ResponsePaging('user.list', {
@@ -183,6 +186,10 @@ export class UserAdminController {
                 await this.emailVerificationService.createAndSaveValidationToken(
                     create
                 );
+            this.eventEmitter.emit(SEND_EMAIL_OTP, {
+                email: create.email,
+                otp: otp,
+            });
             return {
                 _id: create._id,
             };

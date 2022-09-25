@@ -11,7 +11,6 @@ import { UserService } from '../services/user.service';
 import { RoleService } from '../../role/services/role.service';
 import { EmailVerificationService } from '../services/email.verification.service';
 import { Response } from '../../../common/response/decorators/response.decorator';
-import { UserProfileSerialization } from '../serializations/user.profile.serialization';
 import { UserProfileGuard } from '../decorators/user.public.decorator';
 import { AuthJwtGuard } from '../../../common/auth/decorators/auth.jwt.decorator';
 import { GetUser } from '../decorators/user.decorator';
@@ -20,8 +19,10 @@ import { IResponse } from '../../../common/response/response.interface';
 import { UserEmailAlreadyVerifiedGuard } from '../guards/user.email-already-verified';
 import { UserOtpDto } from '../dtos/user.otp.dto';
 import { ENUM_USER_STATUS_CODE_ERROR } from '../constants/user.status-code.constant';
-import { UserLoginSerialization } from '../serializations/user.login.serialization';
 import { UserGetSerialization } from '../serializations/user.get.serialization';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
+import { EmailOtpSendDto } from '../dtos/email.otp.send.dto';
+import { SEND_EMAIL_OTP } from '../constants/user.events.constant';
 
 @Controller({
     version: '1',
@@ -33,7 +34,8 @@ export class UserVerificationController {
         private readonly paginationService: PaginationService,
         private readonly userService: UserService,
         private readonly roleService: RoleService,
-        private readonly emailVerificationService: EmailVerificationService
+        private readonly emailVerificationService: EmailVerificationService,
+        private eventEmitter: EventEmitter2
     ) {}
 
     @Response('user.verifyEmail', {
@@ -43,7 +45,7 @@ export class UserVerificationController {
     @UserProfileGuard()
     @AuthJwtGuard()
     @Post('/verify-email')
-    async profile(
+    async verifyEmail(
         @GetUser() user: IUserDocument,
         @Body() dto: UserOtpDto
     ): Promise<IResponse> {
@@ -52,7 +54,6 @@ export class UserVerificationController {
                 user._id,
                 dto.otp
             );
-
         if (check === false) {
             throw new ForbiddenException({
                 statusCode: ENUM_USER_STATUS_CODE_ERROR.INVALID_OTP,
@@ -65,5 +66,11 @@ export class UserVerificationController {
         return {
             ...user,
         };
+    }
+
+    @OnEvent(SEND_EMAIL_OTP, { async: true })
+    async handleOrderCreatedEvent(payload: EmailOtpSendDto) {
+        console.log(payload);
+        return this.emailVerificationService.sendEmail(payload.email);
     }
 }
