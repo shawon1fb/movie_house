@@ -76,7 +76,7 @@ export class EmailVerificationService {
                 subject: 'Email verification OTP',
                 text: 'your otp is ' + otp,
             });
-            console.log(response);
+            // console.log(response);
             return response;
         } catch (e) {
             console.log(e);

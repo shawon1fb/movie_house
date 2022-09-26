@@ -2,6 +2,7 @@ import {
     Body,
     Controller,
     ForbiddenException,
+    Get,
     Post,
     UseGuards,
 } from '@nestjs/common';
@@ -66,6 +67,25 @@ export class UserVerificationController {
         return {
             ...user,
         };
+    }
+
+    @Response('user.resendEmailVerificationToken', {
+        classSerialization: UserGetSerialization,
+    })
+    @UseGuards(UserEmailAlreadyVerifiedGuard)
+    @UserProfileGuard()
+    @AuthJwtGuard()
+    @Get('/resend-email-verification-token')
+    async resendEmailVerificationToken(@GetUser() user: IUserDocument) {
+        const otp: number =
+            await this.emailVerificationService.createAndSaveValidationToken(
+                user._id
+            );
+        this.eventEmitter.emit(SEND_EMAIL_OTP, {
+            email: user.email,
+            otp: otp,
+        });
+        return user;
     }
 
     @OnEvent(SEND_EMAIL_OTP, { async: true })
