@@ -10,6 +10,7 @@ import { PermissionSeed } from './seeds/permission.seed';
 import { RoleSeed } from './seeds/role.seed';
 import { SettingSeed } from './seeds/setting.seed';
 import { UserSeed } from './seeds/user.seed';
+import { ActorModule } from '../modules/actor/actor.module';
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { UserSeed } from './seeds/user.seed';
         PermissionModule,
         RoleModule,
         UserModule,
+        ActorModule,
     ],
     providers: [AuthApiSeed, PermissionSeed, RoleSeed, UserSeed, SettingSeed],
     exports: [],
