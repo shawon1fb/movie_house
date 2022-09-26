@@ -18,7 +18,7 @@ export class UserEmailNotVerifiedGuard implements CanActivate {
             });
         }
 
-        if (__user.isEmailVerified == false) {
+        if (__user.isEmailVerified === false) {
             throw new NotFoundException({
                 statusCode: ENUM_USER_STATUS_CODE_ERROR.USER_EMAIL_NOT_VERIFIED,
                 message: 'user.error.emailIsNotVerified',
