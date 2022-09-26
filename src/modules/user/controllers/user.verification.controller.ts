@@ -2,6 +2,7 @@ import {
     Body,
     Controller,
     ForbiddenException,
+    Get,
     Post,
     UseGuards,
 } from '@nestjs/common';
@@ -11,7 +12,6 @@ import { UserService } from '../services/user.service';
 import { RoleService } from '../../role/services/role.service';
 import { EmailVerificationService } from '../services/email.verification.service';
 import { Response } from '../../../common/response/decorators/response.decorator';
-import { UserProfileGuard } from '../decorators/user.public.decorator';
 import { AuthJwtGuard } from '../../../common/auth/decorators/auth.jwt.decorator';
 import { GetUser } from '../decorators/user.decorator';
 import { IUserDocument } from '../user.interface';
@@ -23,6 +23,8 @@ import { UserGetSerialization } from '../serializations/user.get.serialization';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { EmailOtpSendDto } from '../dtos/email.otp.send.dto';
 import { SEND_EMAIL_OTP } from '../constants/user.events.constant';
+import { UserPayloadPutToRequestGuard } from '../guards/payload/user.payload.put-to-request.guard';
+import { UserNotFoundGuard } from '../guards/user.not-found.guard';
 
 @Controller({
     version: '1',
@@ -41,8 +43,11 @@ export class UserVerificationController {
     @Response('user.verifyEmail', {
         classSerialization: UserGetSerialization,
     })
-    @UseGuards(UserEmailAlreadyVerifiedGuard)
-    @UserProfileGuard()
+    @UseGuards(
+        UserPayloadPutToRequestGuard,
+        UserNotFoundGuard,
+        UserEmailAlreadyVerifiedGuard
+    )
     @AuthJwtGuard()
     @Post('/verify-email')
     async verifyEmail(
@@ -66,6 +71,28 @@ export class UserVerificationController {
         return {
             ...user,
         };
+    }
+
+    @Response('user.resendEmailVerificationToken', {
+        classSerialization: UserGetSerialization,
+    })
+    @UseGuards(
+        UserPayloadPutToRequestGuard,
+        UserNotFoundGuard,
+        UserEmailAlreadyVerifiedGuard
+    )
+    @AuthJwtGuard()
+    @Get('/resend-email-verification-token')
+    async resendEmailVerificationToken(@GetUser() user: IUserDocument) {
+        const otp: number =
+            await this.emailVerificationService.createAndSaveValidationToken(
+                user._id
+            );
+        this.eventEmitter.emit(SEND_EMAIL_OTP, {
+            email: user.email,
+            otp: otp,
+        });
+        return user;
     }
 
     @OnEvent(SEND_EMAIL_OTP, { async: true })

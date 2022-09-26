@@ -6,7 +6,7 @@ import {
     E2E_USER_PROFILE_UPLOAD_URL,
     E2E_USER_PROFILE_URL,
 } from './user.constant';
-import { Types, connection } from 'mongoose';
+import { connection, Types } from 'mongoose';
 import { RouterModule } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import { UserService } from 'src/modules/user/services/user.service';
@@ -23,6 +23,7 @@ import { plainToInstance } from 'class-transformer';
 import { ENUM_USER_STATUS_CODE_ERROR } from 'src/modules/user/constants/user.status-code.constant';
 import { ENUM_FILE_STATUS_CODE_ERROR } from 'src/common/file/constants/file.status-code.constant';
 import { UserPayloadSerialization } from 'src/modules/user/serializations/user.payload.serialization';
+import { EmailVerificationService } from '../../../src/modules/user/services/email.verification.service';
 
 describe('E2E User', () => {
     let app: INestApplication;
@@ -31,6 +32,7 @@ describe('E2E User', () => {
     let roleService: RoleService;
     let helperDateService: HelperDateService;
     let authApiService: AuthApiService;
+    let emailVerificationService: EmailVerificationService;
 
     let user: UserDocument;
 
@@ -60,6 +62,8 @@ describe('E2E User', () => {
         userService = app.get(UserService);
         authService = app.get(AuthService);
         roleService = app.get(RoleService);
+        emailVerificationService = app.get(EmailVerificationService);
+
         helperDateService = app.get(HelperDateService);
         authApiService = app.get(AuthApiService);
 
@@ -98,6 +102,12 @@ describe('E2E User', () => {
             ...payload,
             _id: `${new Types.ObjectId()}`,
         };
+
+        // const otp: number =
+        //     await emailVerificationService.createAndSaveValidationToken(
+        //         user._id
+        //     );
+        await emailVerificationService.setUserEmailVerified(user._id);
 
         accessToken = await authService.createAccessToken(payload);
         accessTokenNotFound = await authService.createAccessToken(

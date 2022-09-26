@@ -12,6 +12,7 @@
   "refresh": "Refresh token success",
   "signUp": "Sign up Success",
   "verifyEmail": "email successfully verified",
+  "resendEmailVerificationToken": "email verification token send successful",
   "error": {
     "notFound": "User not found.",
     "emailExist": "Email user used",

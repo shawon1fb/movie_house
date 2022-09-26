@@ -70,14 +70,12 @@ export class EmailVerificationService {
 
     async sendEmail(toEmail: string, otp: string): Promise<SentMessageInfo> {
         try {
-            const response = await this.mailService.sendMail({
+            return await this.mailService.sendMail({
                 to: toEmail,
                 from: 'mail.shahanulshaheb.com',
                 subject: 'Email verification OTP',
                 text: 'your otp is ' + otp,
             });
-            console.log(response);
-            return response;
         } catch (e) {
             console.log(e);
             throw e;
