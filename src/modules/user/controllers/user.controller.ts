@@ -262,14 +262,17 @@ export class UserController {
                 refreshToken,
             };
         }
-        const randomOtp =
-            await this.emailVerificationService.createAndSaveValidationToken(
-                user._id
-            );
-        this.eventEmitter.emit(SEND_EMAIL_OTP, {
-            email: user.email,
-            otp: randomOtp,
-        });
+        if (user.isEmailVerified === false) {
+            const randomOtp =
+                await this.emailVerificationService.createAndSaveValidationToken(
+                    user._id
+                );
+            this.eventEmitter.emit(SEND_EMAIL_OTP, {
+                email: user.email,
+                otp: randomOtp,
+            });
+        }
+
         return {
             metadata: {
                 // override status code
