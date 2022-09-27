@@ -1,4 +1,14 @@
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+    IsEnum,
+    IsNotEmpty,
+    IsString,
+    ValidationArguments,
+} from 'class-validator';
+
+export enum GENDER_ENUM {
+    MALE = 'male',
+    FEMALE = 'female',
+}
 
 export class CreateActorDto {
     @IsString()
@@ -9,11 +19,10 @@ export class CreateActorDto {
     @IsNotEmpty()
     about: string;
 
-    @IsEnum(['male', 'female'], {
-        message: 'match with enum male, female',
-        always: true,
-    })
     @IsString()
     @IsNotEmpty()
+    @IsEnum(GENDER_ENUM, {
+        message: 'ok',
+    })
     gender: string;
 }

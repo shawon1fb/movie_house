@@ -14,7 +14,7 @@ export class ActorAdminController {
         return 'hello actor admin';
     }
 
-    @Response('role.create')
+    @Response('actor.create')
     @AuthAdminJwtGuard(
         ENUM_AUTH_PERMISSIONS.ACTOR_READ,
         ENUM_AUTH_PERMISSIONS.ACTOR_CREATE
