@@ -1,0 +1,16 @@
+{
+  "list": "List Actor Success.",
+  "get": "Get Actor Success.",
+  "create": "Create Succeed",
+  "delete": "Delete Succeed",
+  "update": "Update Succeed",
+  "inactive": "Inactive Succeed",
+  "active": "Active Succeed",
+  "error": {
+    "notFound": "Actor not found",
+    "exist": "Actor exist",
+    "active": "Actor active invalid",
+    "used": "Actor in used",
+    "inactive": "Actor is inactive"
+  }
+}
