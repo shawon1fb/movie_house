@@ -7,6 +7,8 @@ import { RoleAdminController } from 'src/modules/role/controllers/role.admin.con
 import { RoleModule } from 'src/modules/role/role.module';
 import { UserAdminController } from 'src/modules/user/controllers/user.admin.controller';
 import { UserModule } from 'src/modules/user/user.module';
+import { ActorAdminController } from '../../modules/actor/controllers/actor.admin.controller';
+import { ActorModule } from '../../modules/actor/actor.module';
 
 @Module({
     controllers: [
@@ -14,9 +16,16 @@ import { UserModule } from 'src/modules/user/user.module';
         UserAdminController,
         RoleAdminController,
         PermissionAdminController,
+        ActorAdminController,
     ],
     providers: [],
     exports: [],
-    imports: [UserModule, AuthModule, RoleModule, PermissionModule],
+    imports: [
+        UserModule,
+        AuthModule,
+        RoleModule,
+        PermissionModule,
+        ActorModule,
+    ],
 })
 export class RoutesAdminModule {}
