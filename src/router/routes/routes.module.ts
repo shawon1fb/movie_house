@@ -12,6 +12,8 @@ import { UserController } from 'src/modules/user/controllers/user.controller';
 import { UserModule } from 'src/modules/user/user.module';
 import { AuthController } from '../../common/auth/controllers/auth.controller';
 import { UserVerificationController } from '../../modules/user/controllers/user.verification.controller';
+import { ActorModule } from '../../modules/actor/actor.module';
+import { ActorUserController } from '../../modules/actor/controllers/actor.user.controller';
 
 @Module({
     controllers: [
@@ -20,6 +22,7 @@ import { UserVerificationController } from '../../modules/user/controllers/user.
         HealthController,
         AuthController,
         UserVerificationController,
+        ActorUserController,
     ],
     providers: [],
     exports: [],
@@ -32,6 +35,7 @@ import { UserVerificationController } from '../../modules/user/controllers/user.
         HealthModule,
         TerminusModule,
         HttpModule,
+        ActorModule,
     ],
 })
 export class RoutesModule {}
