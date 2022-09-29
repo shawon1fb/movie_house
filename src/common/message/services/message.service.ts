@@ -24,18 +24,6 @@ export class MessageService {
         this.defaultLanguage = this.configService.get<string>('app.language');
     }
 
-    private setMessage(
-        lang: string,
-        key: string,
-        options?: IMessageSetOptions
-    ): any {
-        return this.i18n.translate(key, {
-            lang: lang || this.defaultLanguage,
-            args:
-                options && options.properties ? options.properties : undefined,
-        });
-    }
-
     async getRequestErrorsMessage(
         requestErrors: ValidationError[],
         customLanguages?: string[]
@@ -76,6 +64,7 @@ export class MessageService {
                         value: propertyValue,
                     },
                 });
+                //const message = transfomer.constraints[constraint];
                 errors.push({
                     property,
                     message,
@@ -136,5 +125,17 @@ export class MessageService {
         }
 
         return messages;
+    }
+
+    private setMessage(
+        lang: string,
+        key: string,
+        options?: IMessageSetOptions
+    ): any {
+        return this.i18n.translate(key, {
+            lang: lang || this.defaultLanguage,
+            args:
+                options && options.properties ? options.properties : undefined,
+        });
     }
 }

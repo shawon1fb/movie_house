@@ -10,7 +10,7 @@ export class UserPutToRequestGuard implements CanActivate {
         const request = context.switchToHttp().getRequest();
         const { params } = request;
         const { user } = params;
-        console.log(params);
+        // console.log(params);
 
         const check: IUserDocument =
             await this.userService.findOneById<IUserDocument>(user, {
