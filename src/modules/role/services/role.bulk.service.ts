@@ -13,7 +13,7 @@ export class RoleBulkService {
     ) {}
 
     async deleteMany(find: Record<string, any>): Promise<DeleteResult> {
-        return await this.roleModel.deleteMany(find);
+        return this.roleModel.deleteMany(find);
     }
 
     async createMany(data: RoleCreateDto[]): Promise<RoleDocument[]> {
