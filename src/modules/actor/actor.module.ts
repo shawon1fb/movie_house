@@ -7,6 +7,8 @@ import {
     ActorEntity,
     ActorSchema,
 } from './schemas/actor.schema';
+import { ActorBulkService } from './services/actor.bulk.service';
+import { ActorService } from './services/actor.service';
 
 @Module({
     imports: [
@@ -21,5 +23,7 @@ import {
             DATABASE_CONNECTION_NAME
         ),
     ],
+    providers: [ActorBulkService, ActorService],
+    exports: [ActorBulkService, ActorService],
 })
 export class ActorModule {}
