@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { IAwsS3 } from '../../../common/aws/aws.interface';
+import { GENDER_ENUM } from '../dtos/create.actor.dto';
 
 @Schema({ timestamps: true, versionKey: false })
 export class ActorEntity {
@@ -15,7 +16,7 @@ export class ActorEntity {
         required: true,
         lowercase: true,
         trim: true,
-        enum: ['male', 'female'],
+        enum: GENDER_ENUM,
     })
     gender: string;
 
