@@ -1,3 +1,9 @@
-import { ActorDocument } from './schemas/actor.schema';
+import { IAwsS3 } from '../../common/aws/aws.interface';
 
-// export type IActorDocument = Omit<ActorDocument, any>;
+export interface IActorDocument {
+    photo: IAwsS3;
+    about: string;
+    gender: string;
+    name: string;
+    _id: string;
+}

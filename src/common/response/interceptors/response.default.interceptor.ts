@@ -1,8 +1,8 @@
 import {
+    CallHandler,
+    ExecutionContext,
     Injectable,
     NestInterceptor,
-    ExecutionContext,
-    CallHandler,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -15,9 +15,9 @@ import { MessageService } from 'src/common/message/services/message.service';
 import { Reflector } from '@nestjs/core';
 import {
     RESPONSE_MESSAGE_PATH_META_KEY,
+    RESPONSE_MESSAGE_PROPERTIES_META_KEY,
     RESPONSE_SERIALIZATION_META_KEY,
     RESPONSE_SERIALIZATION_OPTIONS_META_KEY,
-    RESPONSE_MESSAGE_PROPERTIES_META_KEY,
 } from '../constants/response.constant';
 import {
     ClassConstructor,
@@ -102,7 +102,6 @@ export class ResponseDefaultInterceptor
                         let properties: IMessageOptionsProperties =
                             messageProperties;
                         let serialization = data;
-
                         if (classSerialization) {
                             serialization = plainToInstance(
                                 classSerialization,

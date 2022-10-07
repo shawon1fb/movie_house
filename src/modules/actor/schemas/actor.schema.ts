@@ -27,7 +27,7 @@ export class ActorEntity {
     about: string;
 
     @Prop({
-        required: false,
+        required: true,
         _id: false,
         type: {
             path: String,
@@ -38,7 +38,7 @@ export class ActorEntity {
             mime: String,
         },
     })
-    photo?: IAwsS3;
+    photo: IAwsS3;
 }
 
 export const ActorDatabaseName = 'actors';

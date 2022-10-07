@@ -6,6 +6,7 @@ import { HelperStringService } from '../../../common/helper/services/helper.stri
 import { ConfigService } from '@nestjs/config';
 import { CreateActorDto } from '../dtos/create.actor.dto';
 import { IAwsS3 } from '../../../common/aws/aws.interface';
+import { IActorDocument } from '../actor.interface';
 
 @Injectable()
 export class ActorService {
@@ -41,7 +42,7 @@ export class ActorService {
         return exist ? true : false;
     }
 
-    async create(dto: CreateActorDto, aws: IAwsS3): Promise<ActorEntity> {
+    async create(dto: CreateActorDto, aws: IAwsS3): Promise<IActorDocument> {
         const { name, about, gender } = dto;
 
         const actor: ActorEntity = {
@@ -52,7 +53,19 @@ export class ActorService {
         };
 
         const create: ActorDocument = new this.actorModel(actor);
-        await create.save();
-        return create;
+        const saved = await create.save();
+        return {
+            name: saved.name,
+            about: saved.about,
+            gender: saved.gender,
+            photo: aws,
+            _id: saved._id,
+        };
+    }
+
+    async findOneById<T>(_id: string): Promise<T> {
+        const user = this.actorModel.findById(_id);
+
+        return user.lean();
     }
 }

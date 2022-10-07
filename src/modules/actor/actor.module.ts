@@ -9,6 +9,7 @@ import {
 } from './schemas/actor.schema';
 import { ActorBulkService } from './services/actor.bulk.service';
 import { ActorService } from './services/actor.service';
+import { AwsModule } from '../../common/aws/aws.module';
 
 @Module({
     imports: [
@@ -22,6 +23,7 @@ import { ActorService } from './services/actor.service';
             ],
             DATABASE_CONNECTION_NAME
         ),
+        AwsModule,
     ],
     providers: [ActorBulkService, ActorService],
     exports: [ActorBulkService, ActorService],

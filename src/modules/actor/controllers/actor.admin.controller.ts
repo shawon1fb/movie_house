@@ -22,6 +22,8 @@ import { IAwsS3 } from '../../../common/aws/aws.interface';
 import { AwsS3Service } from '../../../common/aws/services/aws.s3.service';
 import { ENUM_ERROR_STATUS_CODE_ERROR } from '../../../common/error/constants/error.status-code.constant';
 import { IResponse } from '../../../common/response/response.interface';
+import { ActorGetSerialization } from '../serializations/actor.get.serialization';
+import { IActorDocument } from '../actor.interface';
 
 @Controller({
     version: '1',
@@ -33,7 +35,7 @@ export class ActorAdminController {
         private readonly awsService: AwsS3Service
     ) {}
 
-    @Response('actor.create')
+    @Response('actor.create', { classSerialization: ActorGetSerialization })
     @UploadFileSingle('file')
     @AuthAdminJwtGuard(
         ENUM_AUTH_PERMISSIONS.ACTOR_READ,
@@ -69,18 +71,11 @@ export class ActorAdminController {
                 }
             );
 
-            const actor = this.actorService.create(dto, aws);
-            console.log(actor);
-
+            const actor: IActorDocument = await this.actorService.create(
+                dto,
+                aws
+            );
             return actor;
-            // return {
-            //     _id: '633c8a2ae96ccea285904e1f',
-            //     name: 'masud',
-            //     gender: 'male',
-            //     about: 'masud',
-            //     createdAt: '2022-10-04T19:30:43.162Z',
-            //     updatedAt: '2022-10-04T19:30:43.162Z',
-            // };
         } catch (err) {
             throw new InternalServerErrorException({
                 statusCode: ENUM_ERROR_STATUS_CODE_ERROR.ERROR_UNKNOWN,
@@ -93,10 +88,5 @@ export class ActorAdminController {
     @Get('/list')
     async list() {
         return 'list';
-    }
-
-    @Get('/single/:id')
-    async getSingle() {
-        return 'get single actor';
     }
 }
