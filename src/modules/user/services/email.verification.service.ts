@@ -40,7 +40,7 @@ export class EmailVerificationService {
             const create: EmailVerificationDocument =
                 new this.verificationModel(emailVerification);
             await create.save();
-            console.log({ randomOtp });
+            // console.log({ randomOtp });
             return randomOtp;
         } catch (e) {
             throw e;
