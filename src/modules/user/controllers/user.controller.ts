@@ -48,6 +48,7 @@ import { IUserDocument } from '../user.interface';
 import { SEND_EMAIL_OTP } from '../constants/user.events.constant';
 import { EmailVerificationService } from '../services/email.verification.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { UserGetSerialization } from '../serializations/user.get.serialization';
 
 @Controller({
     version: '1',

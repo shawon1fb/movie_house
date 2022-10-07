@@ -9,6 +9,7 @@ import { UserAdminController } from 'src/modules/user/controllers/user.admin.con
 import { UserModule } from 'src/modules/user/user.module';
 import { ActorAdminController } from '../../modules/actor/controllers/actor.admin.controller';
 import { ActorModule } from '../../modules/actor/actor.module';
+import { AwsModule } from '../../common/aws/aws.module';
 
 @Module({
     controllers: [
@@ -21,6 +22,7 @@ import { ActorModule } from '../../modules/actor/actor.module';
     providers: [],
     exports: [],
     imports: [
+        AwsModule,
         UserModule,
         AuthModule,
         RoleModule,

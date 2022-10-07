@@ -229,7 +229,8 @@ describe('E2E User Login', () => {
                 password,
                 rememberMe: false,
             });
-
+        console.log({ status: response.status });
+        console.log({ statusCode: response.body.statusCode });
         expect(response.status).toEqual(HttpStatus.OK);
         expect(response.body.statusCode).toEqual(
             ENUM_USER_STATUS_CODE_SUCCESS.USER_LOGIN_SUCCESS
