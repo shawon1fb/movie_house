@@ -78,7 +78,7 @@ export class EmailVerificationService {
             });
         } catch (e) {
             console.log(e);
-            throw e;
+            // throw e;
         }
     }
 }
