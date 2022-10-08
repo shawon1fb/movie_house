@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { CreateActorDto } from '../dtos/create.actor.dto';
 import { IAwsS3 } from '../../../common/aws/aws.interface';
 import { IActorDocument } from '../actor.interface';
+import { IDatabaseFindAllOptions } from '../../../common/database/database.interface';
 
 @Injectable()
 export class ActorService {
@@ -67,5 +68,30 @@ export class ActorService {
         const user = this.actorModel.findById(_id);
 
         return user.lean();
+    }
+
+    async findAll(
+        find?: Record<string, any>,
+        options?: IDatabaseFindAllOptions
+    ): Promise<IActorDocument[]> {
+        const actors = this.actorModel.find(find);
+
+        if (
+            options &&
+            options.limit !== undefined &&
+            options.skip !== undefined
+        ) {
+            actors.limit(options.limit).skip(options.skip);
+        }
+
+        if (options && options.sort) {
+            actors.sort(options.sort);
+        }
+
+        return actors.lean();
+    }
+
+    async getTotal(find?: Record<string, any>): Promise<number> {
+        return this.actorModel.countDocuments(find);
     }
 }
