@@ -84,9 +84,4 @@ export class ActorAdminController {
             });
         }
     }
-
-    @Get('/list')
-    async list() {
-        return 'list';
-    }
 }
