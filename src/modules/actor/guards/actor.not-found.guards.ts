@@ -4,7 +4,7 @@ import {
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
-import { ENUM_ACTOR_STATUS_CODE_ERROR } from '../constans/actor.status-code.constant';
+import { ENUM_ACTOR_STATUS_CODE_ERROR } from '../constant/actor.status-code.constant';
 
 @Injectable()
 export class ActorNotFoundGuard implements CanActivate {
