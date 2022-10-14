@@ -10,6 +10,9 @@ import { UserModule } from 'src/modules/user/user.module';
 import { ActorAdminController } from '../../modules/actor/controllers/actor.admin.controller';
 import { ActorModule } from '../../modules/actor/actor.module';
 import { AwsModule } from '../../common/aws/aws.module';
+import { MovieModule } from '../../modules/movie/movie.module';
+import { MovieAdminController } from '../../modules/movie/controllers/movie.admin.controller';
+import { IsGenreConstraint } from '../../modules/movie/validator/is-genre.validation';
 
 @Module({
     controllers: [
@@ -18,6 +21,7 @@ import { AwsModule } from '../../common/aws/aws.module';
         RoleAdminController,
         PermissionAdminController,
         ActorAdminController,
+        MovieAdminController,
     ],
     providers: [],
     exports: [],
@@ -28,6 +32,7 @@ import { AwsModule } from '../../common/aws/aws.module';
         RoleModule,
         PermissionModule,
         ActorModule,
+        MovieModule,
     ],
 })
 export class RoutesAdminModule {}

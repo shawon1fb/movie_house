@@ -98,4 +98,5 @@ const routeListMethod = (app: NestApplication) => {
     // logger.log(availableRoutes);
 
     console.log('TOTAL ROUTE => ', availableRoutes.length);
+    console.log('Date => ', Date.now().toString());
 };

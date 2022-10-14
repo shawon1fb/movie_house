@@ -14,6 +14,8 @@ import { AuthController } from '../../common/auth/controllers/auth.controller';
 import { UserVerificationController } from '../../modules/user/controllers/user.verification.controller';
 import { ActorModule } from '../../modules/actor/actor.module';
 import { ActorUserController } from '../../modules/actor/controllers/actor.user.controller';
+import { MovieModule } from '../../modules/movie/movie.module';
+import { MovieUserController } from '../../modules/movie/controllers/movie.user.controller';
 
 @Module({
     controllers: [
@@ -23,6 +25,7 @@ import { ActorUserController } from '../../modules/actor/controllers/actor.user.
         AuthController,
         UserVerificationController,
         ActorUserController,
+        MovieUserController,
     ],
     providers: [],
     exports: [],
@@ -36,6 +39,7 @@ import { ActorUserController } from '../../modules/actor/controllers/actor.user.
         TerminusModule,
         HttpModule,
         ActorModule,
+        MovieModule,
     ],
 })
 export class RoutesModule {}
