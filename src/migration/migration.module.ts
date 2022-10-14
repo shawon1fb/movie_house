@@ -11,6 +11,7 @@ import { RoleSeed } from './seeds/role.seed';
 import { SettingSeed } from './seeds/setting.seed';
 import { UserSeed } from './seeds/user.seed';
 import { ActorModule } from '../modules/actor/actor.module';
+import { MovieModule } from '../modules/movie/movie.module';
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import { ActorModule } from '../modules/actor/actor.module';
         RoleModule,
         UserModule,
         ActorModule,
+        MovieModule,
     ],
     providers: [AuthApiSeed, PermissionSeed, RoleSeed, UserSeed, SettingSeed],
     exports: [],

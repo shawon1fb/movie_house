@@ -10,6 +10,7 @@ import { UserModule } from 'src/modules/user/user.module';
 import { ActorAdminController } from '../../modules/actor/controllers/actor.admin.controller';
 import { ActorModule } from '../../modules/actor/actor.module';
 import { AwsModule } from '../../common/aws/aws.module';
+import { MovieModule } from '../../modules/movie/movie.module';
 
 @Module({
     controllers: [
@@ -28,6 +29,7 @@ import { AwsModule } from '../../common/aws/aws.module';
         RoleModule,
         PermissionModule,
         ActorModule,
+        MovieModule,
     ],
 })
 export class RoutesAdminModule {}
