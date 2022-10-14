@@ -1,6 +1,6 @@
 import {
-    PipeTransform,
     Injectable,
+    PipeTransform,
     UnsupportedMediaTypeException,
 } from '@nestjs/common';
 import {
@@ -17,9 +17,9 @@ export class FileTypeImagePipe implements PipeTransform {
     async transform(value: IFile | IFile[]): Promise<IFile | IFile[]> {
         if (!value) {
             return;
-            return;
         }
 
+        console.log(Array.isArray(value));
         if (Array.isArray(value)) {
             for (const val of value) {
                 await this.validate(val.mimetype);
@@ -29,12 +29,15 @@ export class FileTypeImagePipe implements PipeTransform {
         }
 
         const file = value as IFile;
+        console.log(file);
+
         await this.validate(file.mimetype);
 
         return value;
     }
 
     async validate(mimetype: string): Promise<void> {
+        console.log({ mimetype });
         if (
             !Object.values(ENUM_FILE_IMAGE_MIME).find(
                 (val) => val === mimetype.toLowerCase()
