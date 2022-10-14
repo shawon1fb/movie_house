@@ -17,7 +17,7 @@ import { FileTypeImagePipe } from '../../../common/file/pipes/file.type.pipe';
 import { IFile } from '../../../common/file/file.interface';
 import { UploadFileSingle } from '../../../common/file/decorators/file.decorator';
 import { ActorService } from '../services/actor.service';
-import { ENUM_ACTOR_STATUS_CODE_ERROR } from '../constans/actor.status-code.constant';
+import { ENUM_ACTOR_STATUS_CODE_ERROR } from '../constant/actor.status-code.constant';
 import { IAwsS3 } from '../../../common/aws/aws.interface';
 import { AwsS3Service } from '../../../common/aws/services/aws.s3.service';
 import { ENUM_ERROR_STATUS_CODE_ERROR } from '../../../common/error/constants/error.status-code.constant';

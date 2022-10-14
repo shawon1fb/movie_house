@@ -14,7 +14,7 @@ import {
     ACTOR_DEFAULT_PAGE,
     ACTOR_DEFAULT_PER_PAGE,
     ACTOR_DEFAULT_SORT,
-} from '../constans/actor.list.constant';
+} from '../constant/actor.list.constant';
 
 export class ActorListDto implements PaginationListAbstract {
     @PaginationSearch(ACTOR_DEFAULT_AVAILABLE_SEARCH)
