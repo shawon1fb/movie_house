@@ -11,6 +11,8 @@ import { ActorAdminController } from '../../modules/actor/controllers/actor.admi
 import { ActorModule } from '../../modules/actor/actor.module';
 import { AwsModule } from '../../common/aws/aws.module';
 import { MovieModule } from '../../modules/movie/movie.module';
+import { MovieAdminController } from '../../modules/movie/controllers/movie.admin.controller';
+import { IsGenreConstraint } from '../../modules/movie/validator/is-genre.validation';
 
 @Module({
     controllers: [
@@ -19,6 +21,7 @@ import { MovieModule } from '../../modules/movie/movie.module';
         RoleAdminController,
         PermissionAdminController,
         ActorAdminController,
+        MovieAdminController,
     ],
     providers: [],
     exports: [],

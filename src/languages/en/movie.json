@@ -1,0 +1,16 @@
+{
+  "list": "List Movie Success.",
+  "get": "Get Movie Success.",
+  "create": "Create Succeed",
+  "delete": "Delete Succeed",
+  "update": "Update Succeed",
+  "inactive": "Inactive Succeed",
+  "active": "Active Succeed",
+  "error": {
+    "notFound": "Movie not found",
+    "exist": "Movie exist",
+    "active": "Movie active invalid",
+    "used": "Movie in used",
+    "inactive": "Movie is inactive"
+  }
+}

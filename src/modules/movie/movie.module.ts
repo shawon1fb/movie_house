@@ -6,6 +6,7 @@ import {
     MovieEntity,
     MovieSchema,
 } from './schemas/movie.schema';
+import { IsGenreConstraint } from './validator/is-genre.validation';
 
 @Module({
     imports: [
