@@ -68,6 +68,8 @@ export class ApiKeyStrategy extends PassportStrategy(Strategy, 'api-key') {
                     authApi.passphrase
                 );
 
+            console.log({ decrypted });
+
             const hasKey: boolean =
                 'key' in decrypted &&
                 'timestamp' in decrypted &&
