@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import morgan from 'morgan';
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { createStream } from 'rotating-file-stream';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -28,6 +28,16 @@ export class HttpDebuggerMiddleware implements NestMiddleware {
         );
         this.maxFiles = this.configService.get<number>(
             'app.debugger.http.maxFiles'
+        );
+    }
+
+    async use(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const config: IHttpDebuggerConfig = await this.httpLogger();
+        this.customToken();
+        morgan(config.debuggerHttpFormat, config.HttpDebuggerOptions)(
+            req,
+            res,
+            next
         );
     }
 
@@ -66,16 +76,6 @@ export class HttpDebuggerMiddleware implements NestMiddleware {
             debuggerHttpFormat: DEBUGGER_HTTP_FORMAT,
             HttpDebuggerOptions,
         };
-    }
-
-    async use(req: Request, res: Response, next: NextFunction): Promise<void> {
-        const config: IHttpDebuggerConfig = await this.httpLogger();
-        this.customToken();
-        morgan(config.debuggerHttpFormat, config.HttpDebuggerOptions)(
-            req,
-            res,
-            next
-        );
     }
 }
 

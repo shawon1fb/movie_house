@@ -1,7 +1,13 @@
-import { Body, Controller, Post, UploadedFile } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Post,
+    UploadedFile,
+    UploadedFiles,
+} from '@nestjs/common';
 import { MovieCreateDto } from '../dtos/movie.create.dto';
 import { Response } from '../../../common/response/decorators/response.decorator';
-import { UploadFileSingle } from '../../../common/file/decorators/file.decorator';
+import { UploadFileFields } from '../../../common/file/decorators/file.decorator';
 import { AuthAdminJwtGuard } from '../../../common/auth/decorators/auth.jwt.decorator';
 import { FileRequiredPipe } from '../../../common/file/pipes/file.required.pipe';
 import { FileSizeImagePipe } from '../../../common/file/pipes/file.size.pipe';
@@ -13,15 +19,23 @@ import { IFile } from '../../../common/file/file.interface';
     path: '/movie',
 })
 export class MovieAdminController {
-    // @Response('movie.create')
-    @UploadFileSingle('file')
-    // @AuthAdminJwtGuard()
+    @Response('movie.create')
+    @UploadFileFields([
+        { name: 'trailer', maxCount: 1 },
+        { name: 'poster', maxCount: 1 },
+    ])
+    @AuthAdminJwtGuard()
     @Post('/create')
     create(
-        @Body() dto: MovieCreateDto
-        // @UploadedFile(FileRequiredPipe, FileSizeImagePipe, FileTypeImagePipe)
-        // file: IFile
+        @Body() dto: MovieCreateDto,
+        //FileTypeImagePipe
+        @UploadedFiles(FileRequiredPipe, FileSizeImagePipe)
+        files: {
+            trailer: IFile[];
+            poster: IFile[];
+        }
     ) {
-        return dto;
+        const { trailer, poster } = files;
+        return trailer.map((e) => e.mimetype);
     }
 }
