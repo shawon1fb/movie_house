@@ -1,7 +1,7 @@
 import {
+    MiddlewareConsumer,
     Module,
     NestModule,
-    MiddlewareConsumer,
     RequestMethod,
 } from '@nestjs/common';
 import { CorsMiddleware } from './cors/cors.middleware';
@@ -44,11 +44,11 @@ export class MiddlewareModule implements NestModule {
                 HttpDebuggerMiddleware,
                 HelmetMiddleware,
                 RateLimitMiddleware,
-                UserAgentMiddleware,
                 ValidateCustomLanguageMiddleware,
                 ResponseTimeMiddleware,
                 TimestampMiddleware,
-                VersionMiddleware
+                VersionMiddleware,
+                UserAgentMiddleware
             )
             .forRoutes('*');
 
