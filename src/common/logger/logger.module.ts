@@ -7,6 +7,7 @@ import {
     LoggerSchema,
 } from './schemas/logger.schema';
 import { LoggerService } from './services/logger.service';
+import { LoggerController } from './controller/logger.controller';
 
 @Global()
 @Module({
@@ -24,5 +25,6 @@ import { LoggerService } from './services/logger.service';
             DATABASE_CONNECTION_NAME
         ),
     ],
+    controllers: [LoggerController],
 })
 export class LoggerModule {}
