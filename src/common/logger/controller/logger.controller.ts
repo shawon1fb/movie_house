@@ -1,9 +1,11 @@
 import { Controller, Get, Param, Res, StreamableFile } from '@nestjs/common';
 import { createReadStream, readdirSync, statSync } from 'fs';
 import { join } from 'path';
-import type { Response } from 'express';
+import * as ex from 'express';
 import { RequestParamGuard } from '../../request/decorators/request.decorator';
 import { FileRequestDto } from '../dto/file.request.dto';
+
+import { Response } from 'src/common/response/decorators/response.decorator';
 
 @Controller({
     version: '1',
@@ -13,7 +15,7 @@ export class LoggerController {
     @RequestParamGuard(FileRequestDto)
     @Get('log/http/:name')
     getFile(
-        @Res({ passthrough: true }) res: Response,
+        @Res({ passthrough: true }) res: ex.Response,
         @Param('name') filename: string
     ): StreamableFile {
         console.log({ filename });
@@ -27,6 +29,7 @@ export class LoggerController {
         return new StreamableFile(file);
     }
 
+    @Response('logger.get')
     @Get('/files')
     fileName() {
         const getAllFiles = (dirPath, arrayOfFiles) => {
@@ -55,6 +58,6 @@ export class LoggerController {
             return arrayOfFiles;
         };
         const result = getAllFiles('logs', []);
-        return { logs: result };
+        return { logger: result };
     }
 }
