@@ -56,6 +56,9 @@ export class HttpDebuggerMiddleware implements NestMiddleware {
         morgan.token('req-headers', (req: Request) =>
             JSON.stringify(req.headers)
         );
+        morgan.token('req-id', (req: Request) => {
+            return `${req.headers['x-request-id']}`;
+        });
     }
 
     private async httpLogger(): Promise<IHttpDebuggerConfig> {

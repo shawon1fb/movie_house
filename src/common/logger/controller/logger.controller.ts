@@ -20,7 +20,7 @@ export class LoggerController {
     ): StreamableFile {
         console.log({ filename });
         const file = createReadStream(
-            join(process.cwd(), 'logs/http/2022-10-31.log')
+            join(process.cwd(), 'logs/http/2022-11-05.log')
         );
         res.set({
             'Content-Type': 'application/json',
