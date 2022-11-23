@@ -1,22 +1,22 @@
 import {
-    S3Client,
-    GetObjectCommand,
-    ListBucketsCommand,
-    ListObjectsV2Command,
-    PutObjectCommand,
-    DeleteObjectCommand,
-    DeleteObjectsCommand,
-    ObjectIdentifier,
-    CreateMultipartUploadCommand,
-    CreateMultipartUploadCommandInput,
-    UploadPartCommandInput,
-    UploadPartCommand,
-    CompleteMultipartUploadCommandInput,
-    CompleteMultipartUploadCommand,
-    CompletedPart,
-    GetObjectCommandInput,
     AbortMultipartUploadCommand,
     AbortMultipartUploadCommandInput,
+    CompletedPart,
+    CompleteMultipartUploadCommand,
+    CompleteMultipartUploadCommandInput,
+    CreateMultipartUploadCommand,
+    CreateMultipartUploadCommandInput,
+    DeleteObjectCommand,
+    DeleteObjectsCommand,
+    GetObjectCommand,
+    GetObjectCommandInput,
+    ListBucketsCommand,
+    ListObjectsV2Command,
+    ObjectIdentifier,
+    PutObjectCommand,
+    S3Client,
+    UploadPartCommand,
+    UploadPartCommandInput,
 } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -35,14 +35,17 @@ export class AwsS3Service {
 
     constructor(private readonly configService: ConfigService) {
         this.s3Client = new S3Client({
-            credentials: {
-                accessKeyId:
-                    this.configService.get<string>('aws.credential.key'),
-                secretAccessKey: this.configService.get<string>(
-                    'aws.credential.secret'
-                ),
-            },
-            region: this.configService.get<string>('aws.s3.region'),
+            // credentials: {
+            //     accessKeyId:
+            //         this.configService.get<string>('aws.credential.key'),
+            //     secretAccessKey: this.configService.get<string>(
+            //         'aws.credential.secret'
+            //     ),
+            // },
+            // region: this.configService.get<string>('aws.s3.region'),
+            region: 'eu-west-1', // The value here doesn't matter.
+            endpoint: 'http://localhost:4566', // This is the localstack EDGE_PORT
+            forcePathStyle: true,
         });
 
         this.bucket = this.configService.get<string>('aws.s3.bucket');

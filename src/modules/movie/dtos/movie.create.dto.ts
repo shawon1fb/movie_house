@@ -1,6 +1,12 @@
 import { IsArray, IsDate, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { IsGenre } from '../validator/is-genre.validation';
 import { Transform } from 'class-transformer';
+import {
+    HasMimeType,
+    IsFile,
+    MaxFileSize,
+    MemoryStoredFile,
+} from 'nestjs-form-data';
 
 export class MovieCreateDto {
     @IsString()
@@ -38,4 +44,14 @@ export class MovieCreateDto {
     @IsNotEmpty()
     @IsGenre()
     genres: string[];
+
+    @IsFile()
+    @MaxFileSize(1e6)
+    @HasMimeType(['image/jpeg', 'image/png'])
+    trailer: MemoryStoredFile;
+
+    @IsFile()
+    @MaxFileSize(1e6)
+    @HasMimeType(['image/jpeg', 'image/png'])
+    poster: MemoryStoredFile;
 }

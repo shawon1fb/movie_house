@@ -1,18 +1,8 @@
-import {
-    Body,
-    Controller,
-    Post,
-    UploadedFile,
-    UploadedFiles,
-} from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { MovieCreateDto } from '../dtos/movie.create.dto';
 import { Response } from '../../../common/response/decorators/response.decorator';
-import { UploadFileFields } from '../../../common/file/decorators/file.decorator';
 import { AuthAdminJwtGuard } from '../../../common/auth/decorators/auth.jwt.decorator';
-import { FileRequiredPipe } from '../../../common/file/pipes/file.required.pipe';
-import { FileSizeImagePipe } from '../../../common/file/pipes/file.size.pipe';
-import { FileTypeImagePipe } from '../../../common/file/pipes/file.type.pipe';
-import { IFile } from '../../../common/file/file.interface';
+import { FormDataRequest } from 'nestjs-form-data';
 
 @Controller({
     version: '1',
@@ -20,22 +10,10 @@ import { IFile } from '../../../common/file/file.interface';
 })
 export class MovieAdminController {
     @Response('movie.create')
-    @UploadFileFields([
-        { name: 'trailer', maxCount: 1 },
-        { name: 'poster', maxCount: 1 },
-    ])
+    @FormDataRequest()
     @AuthAdminJwtGuard()
     @Post('/create')
-    create(
-        @Body() dto: MovieCreateDto,
-        //FileTypeImagePipe
-        @UploadedFiles(FileRequiredPipe, FileSizeImagePipe)
-        files: {
-            trailer: IFile[];
-            poster: IFile[];
-        }
-    ) {
-        const { trailer, poster } = files;
-        return trailer.map((e) => e.mimetype);
+    create(@Body() dto: MovieCreateDto) {
+        return dto;
     }
 }
