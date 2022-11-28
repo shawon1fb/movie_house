@@ -13,6 +13,7 @@ import { AwsModule } from '../../common/aws/aws.module';
 import { MovieModule } from '../../modules/movie/movie.module';
 import { MovieAdminController } from '../../modules/movie/controllers/movie.admin.controller';
 import { IsGenreConstraint } from '../../modules/movie/validator/is-genre.validation';
+import { NestjsFormDataModule } from 'nestjs-form-data';
 
 @Module({
     controllers: [
@@ -26,6 +27,7 @@ import { IsGenreConstraint } from '../../modules/movie/validator/is-genre.valida
     providers: [],
     exports: [],
     imports: [
+        NestjsFormDataModule,
         AwsModule,
         UserModule,
         AuthModule,

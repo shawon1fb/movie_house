@@ -7,6 +7,7 @@ import UserConfig from './user.config';
 import FileConfig from './file.config';
 import MiddlewareConfig from './middleware.config';
 import actorConfig from './actor.config';
+import movieConfig from './movie.config';
 
 export default [
     AppConfig,
@@ -18,4 +19,5 @@ export default [
     MiddlewareConfig,
     FileConfig,
     actorConfig,
+    movieConfig,
 ];

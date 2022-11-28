@@ -1,41 +1,74 @@
 import {
+    BadRequestException,
     Body,
     Controller,
+    InternalServerErrorException,
     Post,
-    UploadedFile,
-    UploadedFiles,
 } from '@nestjs/common';
 import { MovieCreateDto } from '../dtos/movie.create.dto';
 import { Response } from '../../../common/response/decorators/response.decorator';
-import { UploadFileFields } from '../../../common/file/decorators/file.decorator';
 import { AuthAdminJwtGuard } from '../../../common/auth/decorators/auth.jwt.decorator';
-import { FileRequiredPipe } from '../../../common/file/pipes/file.required.pipe';
-import { FileSizeImagePipe } from '../../../common/file/pipes/file.size.pipe';
-import { FileTypeImagePipe } from '../../../common/file/pipes/file.type.pipe';
-import { IFile } from '../../../common/file/file.interface';
+import { FormDataRequest } from 'nestjs-form-data';
+import { AwsS3Service } from '../../../common/aws/services/aws.s3.service';
+import { MovieService } from '../services/movie.service';
+import { ENUM_ACTOR_STATUS_CODE_ERROR } from '../../actor/constant/actor.status-code.constant';
+import { IAwsS3 } from '../../../common/aws/aws.interface';
+import { ENUM_ERROR_STATUS_CODE_ERROR } from '../../../common/error/constants/error.status-code.constant';
 
 @Controller({
     version: '1',
     path: '/movie',
 })
 export class MovieAdminController {
+    constructor(
+        private readonly movieService: MovieService,
+        private readonly awsService: AwsS3Service
+    ) {}
+
     @Response('movie.create')
-    @UploadFileFields([
-        { name: 'trailer', maxCount: 1 },
-        { name: 'poster', maxCount: 1 },
-    ])
+    @FormDataRequest()
     @AuthAdminJwtGuard()
     @Post('/create')
-    create(
-        @Body() dto: MovieCreateDto,
-        //FileTypeImagePipe
-        @UploadedFiles(FileRequiredPipe, FileSizeImagePipe)
-        files: {
-            trailer: IFile[];
-            poster: IFile[];
+    async create(@Body() dto: MovieCreateDto) {
+        const { poster, trailer } = dto;
+        const filename: string = poster.originalName;
+        const content: Buffer = poster.buffer;
+        const mime: string = filename
+            .substring(filename.lastIndexOf('.') + 1, filename.length)
+            .toUpperCase();
+        const path = await this.movieService.createRandomFilename();
+        const exist: boolean = await this.movieService.exists(dto.title);
+
+        if (exist === true) {
+            throw new BadRequestException({
+                statusCode: ENUM_ACTOR_STATUS_CODE_ERROR.ACTOR_EXIST_ERROR,
+                message: 'movie.error.exist',
+            });
         }
-    ) {
-        const { trailer, poster } = files;
-        return trailer.map((e) => e.mimetype);
+        try {
+            const poster: IAwsS3 = await this.awsService.putItemInBucket(
+                `${path.filename}.${mime}`,
+                content,
+                {
+                    path: `${path.path}/${dto.title}/poster`,
+                }
+            );
+            const trailer: IAwsS3 = await this.awsService.putItemInBucket(
+                `${path.filename}.${mime}`,
+                content,
+                {
+                    path: `${path.path}/${dto.title}/trailer`,
+                }
+            );
+
+            const actor = await this.movieService.create(dto, poster, trailer);
+            return actor;
+        } catch (err) {
+            throw new InternalServerErrorException({
+                statusCode: ENUM_ERROR_STATUS_CODE_ERROR.ERROR_UNKNOWN,
+                message: 'http.serverError.internalServerError',
+                error: err.message,
+            });
+        }
     }
 }

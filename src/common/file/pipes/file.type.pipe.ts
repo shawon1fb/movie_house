@@ -29,7 +29,6 @@ export class FileTypeImagePipe implements PipeTransform {
         }
 
         const file = value as IFile;
-        console.log(file);
 
         await this.validate(file.mimetype);
 
