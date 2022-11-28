@@ -1,4 +1,12 @@
-import { IsArray, IsDate, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+    ArrayNotEmpty,
+    IsArray,
+    IsDate,
+    IsEnum,
+    IsMongoId,
+    IsNotEmpty,
+    IsString,
+} from 'class-validator';
 import { IsGenre } from '../validator/is-genre.validation';
 import { Transform } from 'class-transformer';
 import {
@@ -31,6 +39,23 @@ export class MovieCreateDto {
     })
     @IsDate()
     releaseDate: Date;
+
+    @IsNotEmpty()
+    @IsMongoId()
+    director: string;
+
+    @IsMongoId({ each: true })
+    @IsArray()
+    @IsNotEmpty()
+    @ArrayNotEmpty()
+    cast: string[];
+
+    @IsMongoId({ each: true })
+    @IsArray()
+    @IsNotEmpty()
+    @ArrayNotEmpty()
+    writers: string[];
+
     @IsString()
     @IsNotEmpty()
     @IsEnum(['public', 'private'])
@@ -44,6 +69,10 @@ export class MovieCreateDto {
     @IsNotEmpty()
     @IsGenre()
     genres: string[];
+
+    @IsArray()
+    @IsNotEmpty()
+    tags: string[];
 
     @IsFile()
     @MaxFileSize(1e6)

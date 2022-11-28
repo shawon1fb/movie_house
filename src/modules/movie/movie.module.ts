@@ -7,6 +7,8 @@ import {
     MovieSchema,
 } from './schemas/movie.schema';
 import { IsGenreConstraint } from './validator/is-genre.validation';
+import { MovieService } from './services/movie.service';
+import { MovieBulkService } from './services/movie.bulk.service';
 
 @Module({
     imports: [
@@ -21,7 +23,7 @@ import { IsGenreConstraint } from './validator/is-genre.validation';
             DATABASE_CONNECTION_NAME
         ),
     ],
-    exports: [],
-    providers: [],
+    exports: [MovieService, MovieBulkService],
+    providers: [MovieService, MovieBulkService],
 })
 export class MovieModule {}
